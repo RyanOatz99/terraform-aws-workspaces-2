@@ -48,5 +48,5 @@ Example Usage:
 
 CSV File strucuture
 
-firstname,lastname,username,email
-A,User,auser,a.user@ons.gov.uk
+        firstname,lastname,username,email
+        A,User,auser,a.user@ons.gov.uk
