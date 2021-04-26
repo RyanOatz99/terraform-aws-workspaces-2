@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "workspaces_config" {
-  bucket = "${local.name}-config"
+  bucket = "${lower(var.project_team)}-${local.name}-config"
   acl    = "private"
   tags   = merge(local.common_tags, { Name = local.name })
 

@@ -26,7 +26,13 @@ resource "aws_workspaces_directory" "workspaces" {
   }
 
   workspace_access_properties {
-    device_type_web = "ALLOW"
+    device_type_android    = var.workspaces_client_types.device_type_android
+    device_type_chromeos   = var.workspaces_client_types.device_type_chromeos
+    device_type_ios        = var.workspaces_client_types.device_type_ios
+    device_type_osx        = var.workspaces_client_types.device_type_osx
+    device_type_web        = var.workspaces_client_types.device_type_web
+    device_type_windows    = var.workspaces_client_types.device_type_windows
+    device_type_zeroclient = var.workspaces_client_types.device_type_zeroclient
   }
 
   workspace_creation_properties {
@@ -37,4 +43,45 @@ resource "aws_workspaces_directory" "workspaces" {
     user_enabled_as_local_administrator = false
 
   }
+}
+
+resource "aws_cloudwatch_log_group" "workspaces" {
+  count = var.enable_directory_logs == "true" ? 1 : 0
+
+  name              = "${var.directory_logs_name_prefix}/${aws_directory_service_directory.workspaces.id}"
+  retention_in_days = 1
+}
+
+data "aws_iam_policy_document" "ad-log-policy" {
+  count = var.enable_directory_logs == "true" ? 1 : 0
+
+  statement {
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+
+    principals {
+      identifiers = ["ds.amazonaws.com"]
+      type        = "Service"
+    }
+
+    resources = ["${aws_cloudwatch_log_group.workspaces[0].arn}:*"]
+
+    effect = "Allow"
+  }
+}
+
+resource "aws_cloudwatch_log_resource_policy" "ad-log-policy" {
+  count = var.enable_directory_logs == "true" ? 1 : 0
+
+  policy_document = data.aws_iam_policy_document.ad-log-policy[0].json
+  policy_name     = "ad-log-policy"
+}
+
+resource "aws_directory_service_log_subscription" "workspaces" {
+  count = var.enable_directory_logs == "true" ? 1 : 0
+
+  directory_id   = aws_directory_service_directory.workspaces.id
+  log_group_name = aws_cloudwatch_log_group.workspaces[0].name
 }

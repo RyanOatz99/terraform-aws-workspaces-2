@@ -113,3 +113,39 @@ variable "s3_bucket_name" {
   description = "The S3 Bucket where user files are stored"
   default     = ""
 }
+
+variable "workspaces_client_types" {
+  description = "For ALLOW or DENY of WorkSpaces Clients within the deployment"
+
+  type = object({
+    device_type_android    = string
+    device_type_chromeos   = string
+    device_type_ios        = string
+    device_type_osx        = string
+    device_type_web        = string
+    device_type_windows    = string
+    device_type_zeroclient = string
+  })
+
+  default = {
+    device_type_android    = "DENY"
+    device_type_chromeos   = "DENY"
+    device_type_ios        = "DENY"
+    device_type_osx        = "DENY"
+    device_type_web        = "DENY"
+    device_type_windows    = "DENY"
+    device_type_zeroclient = "DENY"
+  }
+}
+
+variable "enable_directory_logs" {
+  description = "True if the Directory Logging should be enabled."
+  default     = "false"
+  type        = string
+}
+
+variable "directory_logs_name_prefix" {
+  description = "The CW LogGroup for Directory Logs"
+  default     = "/aws/directoryservice"
+  type        = string
+}
