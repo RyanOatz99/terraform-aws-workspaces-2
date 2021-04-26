@@ -46,14 +46,14 @@ resource "aws_workspaces_directory" "workspaces" {
 }
 
 resource "aws_cloudwatch_log_group" "workspaces" {
-  count     = var.enable_directory_logs == "true" ? 1 : 0
+  count = var.enable_directory_logs == "true" ? 1 : 0
 
   name              = "${var.directory_logs_name_prefix}/${aws_directory_service_directory.workspaces.id}"
   retention_in_days = 1
 }
 
 data "aws_iam_policy_document" "ad-log-policy" {
-  count     = var.enable_directory_logs == "true" ? 1 : 0
+  count = var.enable_directory_logs == "true" ? 1 : 0
 
   statement {
     actions = [
@@ -73,14 +73,14 @@ data "aws_iam_policy_document" "ad-log-policy" {
 }
 
 resource "aws_cloudwatch_log_resource_policy" "ad-log-policy" {
-  count     = var.enable_directory_logs == "true" ? 1 : 0
+  count = var.enable_directory_logs == "true" ? 1 : 0
 
   policy_document = data.aws_iam_policy_document.ad-log-policy[0].json
   policy_name     = "ad-log-policy"
 }
 
 resource "aws_directory_service_log_subscription" "workspaces" {
-  count     = var.enable_directory_logs == "true" ? 1 : 0
+  count = var.enable_directory_logs == "true" ? 1 : 0
 
   directory_id   = aws_directory_service_directory.workspaces.id
   log_group_name = aws_cloudwatch_log_group.workspaces[0].name

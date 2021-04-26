@@ -146,6 +146,6 @@ variable "enable_directory_logs" {
 
 variable "directory_logs_name_prefix" {
   description = "The CW LogGroup for Directory Logs"
-  default = "/aws/directoryservice"
-  type = string
+  default     = "/aws/directoryservice"
+  type        = string
 }
