@@ -103,6 +103,7 @@ data "aws_iam_policy_document" "cloudberry_s3_access" {
     ]
     resources = [
       "arn:aws:s3:::${var.s3_bucket_name}/*.xml",
+      "arn:aws:s3:::${var.s3_bucket_name}/*.sql",
       "arn:aws:s3:::${var.s3_bucket_name}/*.txt",
       "arn:aws:s3:::${var.s3_bucket_name}/*.csv",
       "arn:aws:s3:::${var.s3_bucket_name}/*.xlsx",
