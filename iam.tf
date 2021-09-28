@@ -119,7 +119,8 @@ data "aws_iam_policy_document" "cloudberry_s3_access" {
       "arn:aws:s3:::${var.s3_bucket_name}/*.dat.mani",
       "arn:aws:s3:::${var.s3_bucket_name}/*.mani",
       "arn:aws:s3:::${var.s3_bucket_name}/*.manifest",
-      "arn:aws:s3:::${var.s3_bucket_name}/*.tsv"
+      "arn:aws:s3:::${var.s3_bucket_name}/*.tsv",
+      "arn:aws:s3:::${var.s3_bucket_name}/*.sav*"
     ]
   }
 }
